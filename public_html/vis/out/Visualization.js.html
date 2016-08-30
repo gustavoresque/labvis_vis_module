@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Visualization.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Visualization.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * Cria um construtor padrão para as visualizações. Permite a reutilização de 
+ * código entre várias visualizações diferentes e define alguns métodos que
+ * devem ser implementados obrigatoriamente (draw, brush)
+ * @constructor
+ * 
+ * @property {number} h Altura disponível para desenho na visualização.
+ * @property {number} w Largura disponível para desenho na visualização.
+ * @property {ColorScheme|string} color Cor a ser utilizada na visualização. Caso a cor
+ * seja uma string (Ex: &lt;code>"black"&lt;code>) todos itens visuais terão a mesma cor
+ * caso seja um objeto deve guardar o esquema de cores e o atributo da base utilizada
+ * 
+ * @property {object} events Objeto que guarda todos os callback registrados para 
+ * cada evento que a visualização dispara.
+ * 
+ *  
+ * 
+ * 
+ * @example 
+//Cria o construtor da visualização desejada
+function  Scatter (container){
+    //Inicializa algumas variáveis comuns,
+    //como altura e largura disponíveis para a visualização
+    Visualization.call(this, container);
+}
+//realiza o link para a delegação de métodos e propriedades
+Scatter.prototype = Object.create(Visualization.prototype);
+//Cria uma instância dessa visualização
+var sca = new Scatter("#container");
+ * 
+ * 
+ * @param {jQuery|string} container Uma seleção do JQuery ou uma string com o 
+ * id de um elemento a ser selecionado. Ex: &lt;code>"#minhaDiv"&lt;/code>
+ * 
+ * @returns {Visualization} Um objeto abstrato de visualização.
+ */
+function Visualization() {
+    /**
+     * Objeto padrão para definir o esquema de cores utilizado na visualização.
+     * 
+     * @namespace ColorScheme
+     * @property {function} method método utilizado para retornar a cor apropriada dado um valor.
+     * @property {string} attr atributo da base que será utilizado para definir a cor.
+     */
+    
+    /**
+     * Evento dispara quando o usuário seleciona um ou mais itens visuais.
+     *
+     * @event Visualization#select
+     * @type {object}
+     * @property {array} selected Array contendo os itens selecionados.
+     */
+    
+    if (!container)
+        container = $("body");
+    else if (typeof container === "string")
+        container = $(container);
+
+    this.h = container.height();
+    this.w = container.width();
+    
+    this.color = "black";
+    
+    this.events = {};
+}
+
+/**
+ * Desenha ou redesenha a visualização dentro do container passado no construtor
+ * da visualização. Os dados que devem ser passados como parâmetro dependem do tipo
+ * de visualização.
+ * 
+ * @memberof Visualization
+ * 
+ * @param {array} metadata Um array contendo informações sobre cada atributo da 
+ * base de dados que está sendo visualizada.
+ * 
+ * @param {array} data Um array contendo todos os dados a serem visualizados.
+ */
+Visualization.prototype.draw = function (metadata, data) {
+    console.log("Sobreescrever esta função!!");
+};
+
+/**
+ * Dá um destaque a um elemento ou a um conjunto de elementos.
+ * 
+ * @memberof Visualization
+ * 
+ * @param {number|array} index índice (ou array de índices) do elemento a ser 
+ * destacado dentro do array &lt;code>data&lt;/code> passado no metodo
+ * &lt;code>vis.draw(metadata, data)&lt;/code>.
+ */
+Visualization.prototype.brush = function () {
+    console.log("Sobreescrever esta função!!");
+};
+
+/**
+ * Registra uma função a ser executada, quando ocorre um evento na visualização.
+ * Exemplo: quando um usuário seleciona um item na visualização.
+ * 
+ * @memberof Visualization
+ * 
+ * @param {string} callback_type tipo do evento a ser observado pelo callback.
+ * @param {function} callback função executada quando o evento ocorrer na visualização.
+ */
+Visualization.prototype.on = function (e, callback) {
+    if(typeof e === "string"){
+        if(this.events[e]){
+            this.events[e].push(callback);
+        }else{
+            this.events[e] = [callback];
+        }
+    }else{
+        console.log("o evento a ser registrado precisa ser uma string");
+    }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Visualization.html">Visualization</a></li></ul><h3>Events</h3><ul><li><a href="Visualization.html#event:select">select</a></li></ul><h3>Namespaces</h3><ul><li><a href="ColorScheme.html">ColorScheme</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 30 2016 12:15:34 GMT-0300 (Hora oficial do Brasil)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
